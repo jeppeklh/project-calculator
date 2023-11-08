@@ -61,7 +61,6 @@ equalsKey.addEventListener("click", () => {
     parseFloat(firstValue),
     parseFloat(secondValue)
   );
-  console.log(answer);
   roundedAnswer = roundOf(answer);
   display.innerHTML = roundedAnswer;
   displayHistory.innerHTML =
