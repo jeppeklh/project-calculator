@@ -17,16 +17,21 @@ allClearKey.addEventListener("click", () => {
   clear();
 });
 
-// clearKey.addEventListener("click", () => {
-//   if (firstValue != "" && operator === "") {
-//     firstValue.substring(0, firstValue.length - 1);
-//   }
+clearKey.addEventListener("click", () => {
+  if (firstValue != "" && operator == "") {
+    firstValue = firstValue.toString().slice(0, -1);
+  }
 
-//   if (secondValue != "" && operator != "") {
-//     secondValue.substring(0, secondValue.length - 1);
-//   }
-//   showHistory();
-// });
+  if (secondValue != "" && operator != "") {
+    secondValue = secondValue.toString().slice(0, -1);
+  }
+
+  if (secondValue === "" && operator != "") {
+    operator = operator.toString().slice(0, -1);
+  }
+  showHistory();
+  updateDisplay();
+});
 
 numberKeys.forEach((element) => {
   element.addEventListener("click", () => {
@@ -53,16 +58,17 @@ operatorKeys.forEach((element) => {
   });
 });
 
-// decimalKey.addEventListener("click", () => {
-//   if ((operator = "")) {
-//     firstValue += ".";
-//     displayHistory.innerHTML = firstValue + " " + operator + " " + secondValue;
-//   } else {
-//     secondValue += ".";
-//     displayHistory.innerHTML = firstValue + " " + operator + " " + secondValue;
-//   }
-//   console.log(firstValue + " " + operator + " " + secondValue);
-// });
+decimalKey.addEventListener("click", () => {
+  alert("Function coming soon!");
+  // if ((operator = "")) {
+  //   firstValue += ".";
+  // } else {
+  //   secondValue += ".";
+  // }
+  // showHistory();
+  // updateDisplay();
+  // console.log(firstValue + " " + operator + " " + secondValue);
+});
 
 equalsKey.addEventListener("click", () => {
   if (operator != "" && secondValue != "") {
@@ -123,8 +129,6 @@ function operate(operator, a, b) {
       return null;
   }
 }
-
-//math functions
 function add(a, b) {
   return a + b;
 }
