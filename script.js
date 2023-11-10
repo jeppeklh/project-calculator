@@ -4,20 +4,35 @@ let secondValue = "";
 
 const displayHistory = document.querySelector(".screen-top");
 const display = document.querySelector(".screen-bottom");
-const allKeys = document.querySelectorAll(".btn");
 const allClearKey = document.querySelector(".all-clear");
 const clearKey = document.querySelector(".clear");
 const numberKeys = document.querySelectorAll(".number");
+const minusButton = document.querySelector(".minus");
 const operatorKeys = document.querySelectorAll(".operator");
-
 const decimalKey = document.querySelector(".decimal");
 const equalsKey = document.querySelector(".equals");
 
-allClearKey.addEventListener("click", () => {
-  clear();
+allClearKey.addEventListener("click", clear);
+clearKey.addEventListener("click", clearLogic);
+minusButton.addEventListener("click", minusLogic);
+equalsKey.addEventListener("click", equalsLogic);
+numberKeys.forEach((element) => {
+  element.addEventListener("click", () => {
+    numberLogic(element);
+  });
+});
+operatorKeys.forEach((element) => {
+  element.addEventListener("click", () => {
+    operatorLogic(element);
+  });
+});
+decimalKey.addEventListener("click", () => {
+  alert("Function coming soon!");
 });
 
-clearKey.addEventListener("click", () => {
+//Functions for button/key logic
+
+function clearLogic() {
   if (firstValue != "" && operator == "") {
     firstValue = firstValue.toString().slice(0, -1);
   }
@@ -31,46 +46,39 @@ clearKey.addEventListener("click", () => {
   }
   showHistory();
   updateDisplay();
-});
+}
 
-numberKeys.forEach((element) => {
-  element.addEventListener("click", () => {
+function numberLogic(element) {
+  display.innerHTML += element.innerHTML;
+
+  if (operator == "") {
+    firstValue += element.innerHTML;
+  } else {
+    secondValue += element.innerHTML;
+  }
+}
+
+function minusLogic() {
+  if (firstValue === "") {
+    firstValue += "-";
+  }
+  //can't use double minus
+  if (operator != "" && operator != "-" && secondValue === "") {
+    secondValue += "-";
+  }
+  updateDisplay();
+}
+
+function operatorLogic(element) {
+  //also check for double minus
+  if (firstValue != "" && firstValue != "-" && operator == "") {
     display.innerHTML += element.innerHTML;
+    operator = element.innerHTML;
+    showHistory();
+  }
+}
 
-    if (operator == "") {
-      firstValue += element.innerHTML;
-    } else {
-      secondValue += element.innerHTML;
-    }
-    displayHistory.innerHTML = firstValue + " " + operator + " " + secondValue;
-  });
-});
-
-operatorKeys.forEach((element) => {
-  element.addEventListener("click", () => {
-    //also check for double minus
-    if (firstValue != "" && firstValue != "-" && operator == "") {
-      display.innerHTML += element.innerHTML;
-      operator = element.innerHTML;
-      displayHistory.innerHTML =
-        firstValue + " " + operator + " " + secondValue;
-    }
-  });
-});
-
-decimalKey.addEventListener("click", () => {
-  alert("Function coming soon!");
-  // if ((operator = "")) {
-  //   firstValue += ".";
-  // } else {
-  //   secondValue += ".";
-  // }
-  // showHistory();
-  // updateDisplay();
-  // console.log(firstValue + " " + operator + " " + secondValue);
-});
-
-equalsKey.addEventListener("click", () => {
+function equalsLogic() {
   if (operator != "" && secondValue != "") {
     let answer = operate(
       operator,
@@ -91,7 +99,7 @@ equalsKey.addEventListener("click", () => {
       secondValue = "";
     }
   }
-});
+}
 
 function showHistory() {
   displayHistory.innerHTML = firstValue + " " + operator + " " + secondValue;
@@ -106,7 +114,7 @@ function clear() {
   firstValue = "";
   secondValue = "";
   operator = "";
-  displayHistory.innerHTML = firstValue + " " + operator + " " + secondValue;
+  showHistory();
 }
 
 function roundOf(number) {
@@ -160,23 +168,3 @@ function modulo(a, b) {
 
   return a % b;
 }
-
-//pseudo for subtract working as * -1
-// if first value is empty
-// first value += "-"
-
-// if operator id NOT empty and second value is empty
-// second value += "-"
-
-const minusButton = document.querySelector(".minus");
-
-minusButton.addEventListener("click", () => {
-  if (firstValue === "") {
-    firstValue += "-";
-  }
-  //can't use double minus
-  if (operator != "" && operator != "-" && secondValue === "") {
-    secondValue += "-";
-  }
-  updateDisplay();
-});
